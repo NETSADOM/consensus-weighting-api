@@ -15,11 +15,9 @@ def calculate_weights(allocations: List[Allocation]):
     Accepts a list of allocations, groups them by target, 
     and applies consensus weighting to calculate each target's final weight.
     """
-    # 1. Call business logic to group and aggregate
     aggregated_data = aggregate_allocations(allocations)
     
-    # 2. Map business objects directly to Pydantic response models
-    return [
+    response = [
         TargetResponse(
             targetId=target_agg.target_id,
             rawTotal=target_agg.raw_total,
@@ -28,3 +26,7 @@ def calculate_weights(allocations: List[Allocation]):
         )
         for target_agg in aggregated_data.values()
     ]
+    
+    # Sort deterministically by targetId
+    response.sort(key=lambda x: x.target_id)
+    return response
