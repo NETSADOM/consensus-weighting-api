@@ -13,3 +13,14 @@ class Allocation(BaseModel):
     user_id: NonEmptyString = Field(alias="userId", description="The ID of the user submitting the allocation")
     target_id: NonEmptyString = Field(alias="targetId", description="The target entity receiving the allocation")
     amount: float = Field(gt=0, description="The allocation amount, must be strictly greater than zero")
+
+class TargetResponse(BaseModel):
+    """
+    Response model for a single target's computed weight and aggregation data.
+    """
+    model_config = ConfigDict(populate_by_name=True)
+
+    target_id: str = Field(alias="targetId")
+    raw_total: float = Field(alias="rawTotal")
+    unique_user_count: int = Field(alias="uniqueUserCount")
+    weight: float
